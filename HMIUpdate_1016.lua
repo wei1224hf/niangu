@@ -17,6 +17,10 @@ local SvwireTargetSpeed1 = 0
 local SvwireTargetTorque1 = 0
 
 local twist_Error = 0
+local twist_Start = 0
+local twist_SetSpeed = 0
+local twist_SetLength = 0
+local twist_ErrorStop = 0
 local twist_Kp = 0
 local twist_Ti = 0
 local twist_Td = 0
@@ -58,7 +62,7 @@ local prt_cnt = 0
 
 
 
-local names = {"twist_Kp","twist_Ti","twist_Td","twist_ref","twist_Max","twist_Min","twist_IMax","twist_Maxdelta","Svwireerror1","SvwireCtrlWord1","SvwireStatusWord1","SvwireOperationMode1","Tension_lo","Tension_hi","Length_lo","Length_hi","SvwireActualSpeed1_lo","SvwireActualSpeed1_hi","SvwireActualTorque1_lo","SvwireActualTorque1_hi","SvwireTargetSpeed1_lo","SvwireTargetSpeed1_hi","SvwireTargetTorque1_lo","SvwireTargetTorque1_hi","SvwireTargetSpeed2_lo","SvwireTargetSpeed2_hi"}
+local names = {"twist_Start","twist_SetSpeed","twist_SetLength","twist_ErrorStop","twist_Kp","twist_Ti","twist_Td","twist_ref","twist_Max","twist_Min","twist_IMax","twist_Maxdelta","Svwireerror1","SvwireCtrlWord1","SvwireStatusWord1","SvwireOperationMode1","Tension_lo","Tension_hi","Length_lo","Length_hi","SvwireActualSpeed1_lo","SvwireActualSpeed1_hi","SvwireActualTorque1_lo","SvwireActualTorque1_hi","SvwireTargetSpeed1_lo","SvwireTargetSpeed1_hi","SvwireTargetTorque1_lo","SvwireTargetTorque1_hi","SvwireTargetSpeed2_lo","SvwireTargetSpeed2_hi"}
 
 
 --取数据的低16位跟16高位
@@ -113,6 +117,11 @@ if handle > 0 then
 
           TPWrite2(_req)
           
+          twist_Start = GetAO("twist_Start")
+          twist_SetSpeed = GetAO("twist_SetSpeed")
+          twist_SetLength = GetAO("twist_SetLength")
+          twist_ErrorStop = GetAO("twist_ErrorStop")
+          
           twist_Kp = GetAO("twist_Kp")
           twist_Ti = GetAO("twist_Ti")
           twist_Td = GetAO("twist_Td")
@@ -145,7 +154,7 @@ if handle > 0 then
           local length = _req[6]
           local _response = {1,3,length*2}
           
-          local allData = {twist_Kp ,twist_Ti ,twist_Td ,twist_ref ,twist_Max ,twist_Min ,twist_IMax ,twist_Maxdelta ,Svwireerror1 ,SvwireCtrlWord1 ,SvwireStatusWord1 ,SvwireOperationMode1 , Tension_lo,Tension_hi ,Length_lo,Length_hi ,SvwireActualSpeed1_lo,SvwireActualSpeed1_hi ,SvwireActualTorque1_lo,SvwireActualTorque1_hi ,SvwireTargetSpeed1_lo,SvwireTargetSpeed1_hi ,SvwireTargetTorque1_lo,SvwireTargetTorque1_hi,SvwireTargetSpeed2_lo,SvwireTargetSpeed2_hi }
+          local allData = {twist_Start,twist_SetSpeed,twist_SetLength,twist_ErrorStop,twist_Kp ,twist_Ti ,twist_Td ,twist_ref ,twist_Max ,twist_Min ,twist_IMax ,twist_Maxdelta ,Svwireerror1 ,SvwireCtrlWord1 ,SvwireStatusWord1 ,SvwireOperationMode1 , Tension_lo,Tension_hi ,Length_lo,Length_hi ,SvwireActualSpeed1_lo,SvwireActualSpeed1_hi ,SvwireActualTorque1_lo,SvwireActualTorque1_hi ,SvwireTargetSpeed1_lo,SvwireTargetSpeed1_hi ,SvwireTargetTorque1_lo,SvwireTargetTorque1_hi,SvwireTargetSpeed2_lo,SvwireTargetSpeed2_hi }
           for i = start,start+length -1,1 do
             local value = allData[i+1]
             _response[3+i*2+1] = bit.rshift(value,8)
@@ -171,8 +180,10 @@ if handle > 0 then
             SvwireTargetTorque1_lo_ = val
           elseif (_name == "SvwireTargetSpeed2_lo")  then
             SvwireTargetSpeed2_lo_ = val
+
           elseif (_name == "Length_lo")  then
             Length_lo = val   
+
           elseif (_name == "SvwireTargetTorque1_hi")  then
             local _val = 0
             if val > 0x8000 then
@@ -193,7 +204,7 @@ if handle > 0 then
               _val = (val * 0x10000) + SvwireTargetSpeed2_lo_
             end
             SetAO("SvwireTargetSpeed2",_val)
-            
+
           elseif (_name == "Length_hi")  then
             local _val = 0
             if val > 0x8000 then
@@ -203,8 +214,10 @@ if handle > 0 then
             else
               _val = (val * 0x10000) + Length_lo
             end
-            SetAO("Length",_val)     
-          else          
+            SetAO("Length",_val)            
+          else
+
+                    
             SetAO(_name,val)
           end
           
