@@ -4,7 +4,7 @@
 --@date: 2023-10-09
 
 local bit = require("bit")
-
+SimInput("restart",true)
 
 
 local Tension = 0
@@ -62,7 +62,7 @@ local prt_cnt = 0
 
 
 
-local names = {"twist_Start","twist_SetSpeed","twist_SetLength","twist_ErrorStop","twist_Kp","twist_Ti","twist_Td","twist_ref","twist_Max","twist_Min","twist_IMax","twist_Maxdelta","Svwireerror1","SvwireCtrlWord1","SvwireStatusWord1","SvwireOperationMode1","Tension_lo","Tension_hi","Length_lo","Length_hi","SvwireActualSpeed1_lo","SvwireActualSpeed1_hi","SvwireActualTorque1_lo","SvwireActualTorque1_hi","SvwireTargetSpeed1_lo","SvwireTargetSpeed1_hi","SvwireTargetTorque1_lo","SvwireTargetTorque1_hi","SvwireTargetSpeed2_lo","SvwireTargetSpeed2_hi"}
+local names = {"twist_Start","twist_SetSpeed","twist_SetLength","twist_ErrorStop","twist_Kp","twist_Ti","twist_Td","twist_ref","twist_Max","twist_Min","twist_IMax","twist_Maxdelta","Svwireerror1","SvwireCtrlWord1","SvwireStatusWord1","SvwireOperationMode1","Tension_lo","Tension_hi","Length_lo","Length_hi","SvwireActualSpeed1_lo","SvwireActualSpeed1_hi","SvwireActualTorque1_lo","SvwireActualTorque1_hi","SvwireTargetSpeed1_lo","SvwireTargetSpeed1_hi","SvwireTargetTorque1_lo","SvwireTargetTorque1_hi","SvwireTargetSpeed2_lo","SvwireTargetSpeed2_hi","restart"}
 
 
 --取数据的低16位跟16高位
@@ -214,10 +214,14 @@ if handle > 0 then
             else
               _val = (val * 0x10000) + Length_lo
             end
-            SetAO("Length",_val)            
-          else
-
-                    
+            SetAO("Length",_val)    
+          elseif (_name == "restart")  then
+			if val == 1 then
+			  SetDI("restart",1)
+			else
+			  SetDI("restart",0)
+			end			
+          else    
             SetAO(_name,val)
           end
           
