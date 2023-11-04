@@ -62,7 +62,8 @@ local prt_cnt = 0
 
 
 
-local names = {"twist_Start","twist_SetSpeed","twist_SetLength","twist_ErrorStop","twist_Kp","twist_Ti","twist_Td","twist_ref","twist_Max","twist_Min","twist_IMax","twist_Maxdelta","Svwireerror1","SvwireCtrlWord1","SvwireStatusWord1","SvwireOperationMode1","Tension_lo","Tension_hi","Length_lo","Length_hi","SvwireActualSpeed1_lo","SvwireActualSpeed1_hi","SvwireActualTorque1_lo","SvwireActualTorque1_hi","SvwireTargetSpeed1_lo","SvwireTargetSpeed1_hi","SvwireTargetTorque1_lo","SvwireTargetTorque1_hi","SvwireTargetSpeed2_lo","SvwireTargetSpeed2_hi","restart"}
+local names = {"twist_Start","twist_SetSpeed","twist_SetLength","twist_ErrorStop","twist_Kp","twist_Ti","twist_Td","twist_ref","twist_Max","twist_Min","twist_IMax","twist_Maxdelta","Svwireerror1","SvwireCtrlWord1",
+"SvwireStatusWord1","SvwireOperationMode1","Tension_lo","Tension_hi","Length_lo","Length_hi","SvwireActualSpeed1_lo","SvwireActualSpeed1_hi","SvwireActualTorque1_lo","SvwireActualTorque1_hi","SvwireTargetSpeed1_lo","SvwireTargetSpeed1_hi","SvwireTargetTorque1_lo","SvwireTargetTorque1_hi","SvwireTargetSpeed2_lo","SvwireTargetSpeed2_hi","restart"}
 
 
 --取数据的低16位跟16高位
