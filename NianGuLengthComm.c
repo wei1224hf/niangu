@@ -232,9 +232,7 @@ void modbusComm(){
 			io_fast_read("SvwireTargetTorque1", &val); hi = val << 8; lo = val - hi * 65536;  mapping->tab_registers[idx] = lo; idx ++; mapping->tab_registers[idx] = hi; idx ++;			
 			io_fast_read("SvwireTargetSpeed2", &val); hi = val << 8; lo = val - hi * 65536;  mapping->tab_registers[idx] = lo; idx ++; mapping->tab_registers[idx] = hi; idx ++;			
 
-			
 			io_fast_read("restart", &val); mapping->tab_registers[idx] = val;
-
 		}
 		else if(req[1]==6){
 			int data_address = (req[2] << 8) | req[3];
@@ -288,7 +286,6 @@ int run(){
         os_delay(CT - (t2-t1));
     }
     return 1;
-
 }
 
 
